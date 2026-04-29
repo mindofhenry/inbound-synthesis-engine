@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+.next/
+
+# Environment / secrets
+.env
+.env.*
+*.secret
+secrets/
+
+# n8n — sanitized exports under n8n/workflows/*.json may be committed.
+# Anything ending .local.json is treated as unsafe (carries credentials/IDs)
+# and stays local.
+n8n/workflows/*.local.json
+n8n/**/*.credentials.json
+
+# Synthetic data outputs
+data/synthetic/
+data/seeds/*.local.json
+
+# Planning files (working memory, per project convention)
+findings.md
+progress.md
+task_plan.md
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
