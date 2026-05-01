@@ -1,0 +1,31 @@
+{
+  "_snapshot_meta": {
+    "workflow_id": "yU1s6WS1N7vvgEGO",
+    "name": "Inbound Synthesis - Explain Callback v0",
+    "captured_at": "2026-04-30",
+    "purpose": "Reference snapshot of WF2 captured during MIN-77 work. WF2 is OUT OF SCOPE for MIN-77 (no edits). Snapshot here for reference only.",
+    "active": true,
+    "versionId": "b62133f9-af2b-4be7-8088-370011dbedf0",
+    "node_count": 7,
+    "sticky_count": 4,
+    "out_of_scope_for_min77": true
+  },
+  "name": "Inbound Synthesis - Explain Callback v0",
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "connections": {
+    "Slack Interaction": { "main": [[{ "node": "Parse Slack Payload", "type": "main", "index": 0 }]] },
+    "Parse Slack Payload": { "main": [[{ "node": "Query Signal Events", "type": "main", "index": 0 }]] },
+    "Query Signal Events": { "main": [[{ "node": "Query Inbound Alert", "type": "main", "index": 0 }]] },
+    "Query Inbound Alert": { "main": [[{ "node": "Build Scoring Payload + Score", "type": "main", "index": 0 }]] },
+    "Build Scoring Payload + Score": { "main": [[{ "node": "Claude Synthesis", "type": "main", "index": 0 }]] },
+    "Claude Synthesis": { "main": [[{ "node": "Send a message", "type": "main", "index": 0 }]] }
+  },
+  "_chain_summary": "Slack Interaction (POST /explain-score) -> Parse Slack Payload (Code) -> Query Signal Events (Postgres, 30d) -> Query Inbound Alert (Postgres, latest, executeOnce) -> Build Scoring Payload + Score (Code, canonical formula, executeOnce) -> Claude Synthesis (Anthropic API, claude-haiku-4-5-20251001, 800 tokens, 4-paragraph explanation) -> Send a message (Slack channel reply)",
+  "_min77_note": "WF2 emits a 4-paragraph THREADED EXPLAIN reply (different surface than WF1's HOT alert). MIN-77 does not modify WF2; the 'Explain this score' button on the redesigned WF1 alert keeps the same action_id='explain_score' + value=account_id contract so WF2 keeps working unchanged.",
+  "_full_export_via": "Use mcp__claude_ai_n8n__get_workflow_details with workflowId='yU1s6WS1N7vvgEGO' for the full node bodies; this snapshot is metadata only because WF2 is out of scope."
+}
