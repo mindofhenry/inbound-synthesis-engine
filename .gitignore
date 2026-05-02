@@ -40,3 +40,4 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+.claude/settings.local.json
