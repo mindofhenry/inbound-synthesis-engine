@@ -99,6 +99,7 @@ acceptance. No long-lived feature branches.
 ### n8n
 
 - **`n8n:validate_workflow` runs before any `create_workflow_from_code` or `update_workflow`.** Never push an unvalidated workflow.
+- **After any workflow node expression edit via `update_workflow`, manually verify the target node's field values in the live n8n UI before smoke testing.** SDK updates do not always carry through to live node expression fields. Confirm visually that the expression matches what was written.
 - **n8n is self-hosted at `n8n.mindofhenry.xyz`.** Don't assume n8n.cloud endpoints or behavior.
 - **Workflow JSON exports may carry credentials** — only commit sanitized exports under `n8n/workflows/`. The `.local.json` suffix is reserved for unsafe local exports and is gitignored.
 
