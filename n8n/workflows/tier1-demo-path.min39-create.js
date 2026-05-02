@@ -549,7 +549,7 @@ const slackDm = node({
       },
       messageType: 'block',
       text: expr("{{ $('Process SFDC Build Blocks').item.json.contact_name }} booked a meeting — Tier 1 Inbound"),
-      blocksUi: expr("{{ $('Process SFDC Build Blocks').item.json.blocks_json }}"),
+      blocksUi: expr("{{ JSON.stringify({ blocks: JSON.parse($('Process SFDC Build Blocks').item.json.blocks_json) }) }}"),
       otherOptions: {
         includeLinkToWorkflow: false
       }
