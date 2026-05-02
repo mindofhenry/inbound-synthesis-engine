@@ -87,6 +87,21 @@ const switchByActionId = switchCase({
             },
             renameOutput: true,
             outputKey: 'show_contact_details'
+          },
+          {
+            conditions: {
+              options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
+              conditions: [
+                {
+                  leftValue: '={{ $json.action_id }}',
+                  rightValue: 'sla_claim',
+                  operator: { type: 'string', operation: 'equals' }
+                }
+              ],
+              combinator: 'and'
+            },
+            renameOutput: true,
+            outputKey: 'sla_claim'
           }
         ]
       },
@@ -147,6 +162,30 @@ const forwardContactDetails = node({
   }
 });
 
+const forwardSlaClaim = node({
+  type: 'n8n-nodes-base.httpRequest',
+  version: 4.4,
+  config: {
+    name: 'Forward to SLA Claim',
+    parameters: {
+      method: 'POST',
+      url: 'https://n8n.mindofhenry.xyz/webhook/internal/sla-claim',
+      sendHeaders: true,
+      headerParameters: {
+        parameters: [
+          { name: 'content-type', value: 'application/json' }
+        ]
+      },
+      sendBody: true,
+      contentType: 'json',
+      specifyBody: 'json',
+      jsonBody: FORWARD_BODY_EXPR,
+      options: {}
+    },
+    position: [640, 160]
+  }
+});
+
 const fallbackEphemeral = node({
   type: 'n8n-nodes-base.httpRequest',
   version: 4.4,
@@ -167,7 +206,7 @@ const fallbackEphemeral = node({
       jsonBody: FALLBACK_BODY_EXPR,
       options: {}
     },
-    position: [640, 160]
+    position: [640, 320]
   }
 });
 
@@ -207,7 +246,7 @@ const stickySwitch = node({
   config: {
     name: 'Sticky Switch',
     parameters: {
-      content: '## Dispatch by action_id\n\nexplain_score → WF2 (Explain Callback)\nshow_contact_details → WF3 (Contact Details Callback)\nfallback → ephemeral "This button isn\'t wired up yet."\n\nAdd new MIN-70 feedback buttons (👍/👎) by appending a third + fourth case here, then building their internal workflows. No Slack-side change required.',
+      content: '## Dispatch by action_id\n\nexplain_score → WF2 (Explain Callback)\nshow_contact_details → WF3 (Contact Details Callback)\nsla_claim → SLA Claim Handler (MIN-82)\nfallback → ephemeral "This button isn\'t wired up yet."\n\nAdd new MIN-70 feedback buttons (👍/👎) by appending a fourth + fifth case here, then building their internal workflows. No Slack-side change required.',
       height: 280,
       width: 320,
       color: 4
@@ -242,7 +281,7 @@ const stickyFallback = node({
       width: 320,
       color: 3
     },
-    position: [608, 320]
+    position: [608, 480]
   }
 });
 
@@ -252,7 +291,8 @@ export default workflow('slack-interactivity-router', 'Slack Interactivity Route
   .to(switchByActionId
     .onCase(0, forwardExplain)
     .onCase(1, forwardContactDetails)
-    .onCase(2, fallbackEphemeral))
+    .onCase(2, forwardSlaClaim)
+    .onCase(3, fallbackEphemeral))
   .add(stickyIngress)
   .add(stickyParse)
   .add(stickySwitch)
