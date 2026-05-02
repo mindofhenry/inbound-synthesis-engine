@@ -33,14 +33,13 @@ flowchart LR
 
 | Layer | Choice |
 |---|---|
-| Workflows | n8n (self-hosted at `n8n.mindofhenry.xyz`) |
+| Workflows | n8n (self-hosted) |
 | Database | Supabase Postgres (shared Beacon project) |
 | Alerts | Slack Block Kit + incoming webhooks + interactivity |
 | LLM | Claude Haiku (alert blurbs, buying-stage explain) |
 | CRM mock | Salesforce sandbox (synthetic accounts + opps) |
 | Data gen / loaders | Python |
 | Scripts | PowerShell (Windows host) |
-| System of record | Linear project `inbound-synthesis-engine-66dbe690d9d7` |
 
 ## Workflow inventory
 
@@ -87,9 +86,6 @@ Full smoke-test runbook: [docs/smoke-test.md](docs/smoke-test.md). End-to-end de
 ## Links
 
 - **Loom walkthrough:** _coming soon_
-- **Notion proposal:** https://www.notion.so/3450592291a88128a6b7c12ef2325338
-- **Linear project:** https://linear.app/mindofhenry/project/inbound-synthesis-engine-66dbe690d9d7
-- **GitHub:** https://github.com/mindofhenry/inbound-synthesis-engine
 
 ---
 
